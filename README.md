@@ -1,2 +1,2 @@
-# PSM
-Password Strength Meter
+# Q3PasswordStrengthMeter
+Q3 password Strength Meter 
