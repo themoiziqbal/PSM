@@ -1,61 +1,81 @@
-import re
 import streamlit as st
+import re
 
-st.set_page_config(page_title="PASSWORD STRENGTH METER BY MOIZ", page_icon="💪🔒", layout="centered", initial_sidebar_state="expanded")
+# Page Config
+st.set_page_config(
+    page_title="Password Strength Meter", 
+    page_icon="🔐", 
+    layout="centered", 
+    initial_sidebar_state="collapsed"
+)
+
+# App Title with Inline CSS for Proper Styling
+st.markdown(
+    """
+    <h1 style='text-align: center; color: #0078ff; font-size: 2em; font-weight: bold;'>
+        Password Strength Meter 🔐
+    </h1>
+    """,
+    unsafe_allow_html=True
+)
 
 st.markdown("""
-<style>
-    .main {text-align: center;}
-    .stTextInput {width: 60% !important; margin: auto; }
-    .stButton {width: 50%; background-colo #7cAF70; color: white; font-size: 18px; }
-    .stButton:hover { background-color: #7cAF70;}
-</style>
-""", unsafe_allow_html=True)
+## Welcome! 🚀
+Use this tool to check your password strength and get security suggestions.
+""")
 
-st.title("Password Strength Meter")
-st.write("Enter your password to check its strength")
+# Password Input
+password = st.text_input("🔑 Enter your password:", type="password")
 
-def check_password_strength(password):
-    score = 0
-    feedback = []
+# Initialize score and feedback
+feedback = []
+score = 0
 
-
-    if len(password) >= 8:
+if password:
+    # Length Checking
+    if len(password) >= 12:
+        score += 2
+    elif len(password) >= 8:
         score += 1
     else:
-        feedback.append("Password must be at least 8 characters long.")
+        feedback.append("❌ Password should be at least 8 characters long.") 
 
+    # Upper & Lowercase Check
     if re.search(r"[A-Z]", password) and re.search(r"[a-z]", password):
         score += 1
     else:
-        feedback.append("Password must contain both upper and lower case characters.")
+        feedback.append("❌ Include both uppercase and lowercase letters.")
 
+    # Digit Check
     if re.search(r"\d", password):
         score += 1
     else:
-        feedback.append("Password must contain at least one digit.")
+        feedback.append("❌ Add at least one number (0-9).")
 
-    if re.search(r"\W", password):
+    # Special Character Check
+    if re.search(r"[^\w]", password):
         score += 1
     else:
-        feedback.append("Password must contain at least one special character.")
+        feedback.append("❌ Include at least one special character (e.g., !@#$%^&*).")
 
-    if score == 4:
-        st.success("**Password is strong.")
-    elif score == 3:
-        st.info("** Password is medium, may change to strong.")
+    # Strength Rating & Progress Bar
+    st.markdown("## Strength Rating:")
+    st.progress(score / 5)
+
+    if score >= 5:
+        feedback.append("✅ Excellent Password! 💪")
+    elif score >= 3:
+        feedback.append("⚠️ Moderate Password - Consider improving it.")
     else:
-        st.error(" ** Weak password")
-    
-    if feedback:
-        with st.expander(" **Improve your password** "):
-            for item in feedback:
-                st.write(item)
-    
-    password = st.text_input("Enter your password", type="password", help="Ensure your password is strong.")
+        feedback.append("❌ Weak Password - Use the suggestions below.")
 
-    if st.button("Check Password Strength"):
-        if password:
-            check_password_strength(password)
-        else:
-            st.warning("Please enter a password to check its strength.")
+    # Display Suggestions
+    if feedback:
+        st.markdown("## Suggestions:")
+        for suggestion in feedback:
+            st.write(f"- {suggestion}")
+else:
+    st.info("Enter a password to get started!")
+
+# Footer
+st.write("Made by Moiz Iqbal")
