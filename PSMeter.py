@@ -12,7 +12,7 @@ st.set_page_config(
 # App Title with Inline CSS for Proper Styling
 st.markdown(
     """
-    <h1 style='text-align: center; color: #0078ff; font-size: 2em; font-weight: bold;'>
+    <h1 style='text-align: center; color: #0037ff; font-size: 2em; font-weight: bold;'>
         Password Strength Meter 🔐
     </h1>
     """,
