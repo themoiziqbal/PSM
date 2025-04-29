@@ -1,2 +1,2 @@
-# Q3PasswordStrengthMeter
-Q3 password Strength Meter 
+# PasswordStrengthMeter By Moiz Iqbal
+password Strength Meter Python Assignment 
